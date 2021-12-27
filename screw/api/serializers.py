@@ -1,36 +1,29 @@
 from rest_framework import serializers
 
-from ..models import Categories,\
-                    SubCategory,\
-                    ProductTypeList,\
-                    Product,\
-                    ProductRange
+from ..models import Category, ProductRange, Product
 
 
-class CategoriesSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Categories
+        model = Category
         fields = '__all__'
 
 
-class SubCategoriesSerializer(serializers.ModelSerializer):
-
-    category = CategoriesSerializer()
+class ProductRangeSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = SubCategory
+        model = ProductRange
         fields = '__all__'
 
 
-class ProductTypeListSerializer(serializers.ModelSerializer):
+class ProductsSerializer(serializers.ModelSerializer):
 
-    sub_category = SubCategoriesSerializer()
+    product_range = ProductRangeSerializer()
 
     class Meta:
-        model = ProductTypeList
+        model = Product
         fields = '__all__'
-
 
 
 

@@ -1,31 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, {Component, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container ,Row, Col, Button} from "react-bootstrap";
 
 
-
-
 function MyNavbar() {
 
-    const [product_type_list, setProductTypeList] = useState([])
-    const [sub_categories, setSubCategories] = useState([])
     const [categories, setCategories] = useState([])
 
     useEffect(()=> {
         axios({
             method: "GET",
-            url: `http://127.0.0.1:8000/api/categories/`
+            url: "http://127.0.0.1:8000/api/categories/"
         }).then(response => {
-
-            setProductTypeList(response.data)
-            setSubCategories(response.data.sub_category)
-            setCategories(response.data.category)
+            setCategories(response.data)
         })
     }, [])
+
     return (
+
+
         <div className="App">
+
             <Container>
                 <br/>
               <Row>
@@ -46,11 +43,8 @@ function MyNavbar() {
                             <div className="nav-scroller py-1 mb-2">
                                 <nav className="nav d-flex justify-content-between">
                                     <Link  className="p-2 link-secondary" to={{ pathname: `/`, fromDashboard: false }}><h6><u>BlogNews</u></h6></Link>
-                                    {categories.map(c=>(
-                                        <Link className="p-2 link-secondary" to={{ pathname: `/category/${c.id}/`, fromDashboard: false }}><h6><u>{c.name}</u></h6></Link>
-                                    ))}
-                                    {sub_categories.map(c=>(
-                                        <p>{c.name}</p>
+                                    {categories.map(c =>(
+                                        <Link  className="p-2 link-secondary" to={{ pathname: `category/${c.id}/`, fromDashboard: false }}><h6><u>{c.name}</u></h6></Link>
                                     ))}
                                 </nav>
                                 <hr/>
@@ -64,3 +58,4 @@ function MyNavbar() {
 }
 
 export default MyNavbar;
+

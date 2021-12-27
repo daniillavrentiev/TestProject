@@ -2,49 +2,20 @@ from django.db import models
 from django.utils import timezone
 
 
-class Categories(models.Model):
+class Category(models.Model):
 
-    name = models.CharField(verbose_name='Название Основной Категории', max_length=255)
+    name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     def __str__(self):
-        return f'Название категории {self.name}'
-
-    class Meta:
-        verbose_name_plural = 'Категория Продукта'
-
-
-class SubCategory(models.Model):
-
-    category = models.ForeignKey(Categories, verbose_name='Основная Категория', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, verbose_name='Название ПодКатегории')
-    slug = models.SlugField(unique=True)
-
-    def __str__(self):
-        return f'Название ПодКатегории {self.name} | ' \
-               f'Название Основной Категории {self.category.name}'
-
-    class Meta:
-        verbose_name_plural = 'ПодКатегория Продукта'
-
-
-class ProductTypeList(models.Model):
-
-    sub_category = models.ForeignKey(SubCategory, verbose_name='ПодКатегория Продукта', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, verbose_name='Тип Продукта')
-    slug = models.SlugField()
-
-    def __str__(self):
-        return f'Название типа продукта {self.name} | ' \
-               f'Название  ПодКатегории продукта {self.sub_category.name}'
-
-    class Meta:
-        verbose_name_plural = 'Тип продукта Продукта ПодКатегории'
+        return self.name
 
 
 class Product(models.Model):
 
-    product_type_list = models.ForeignKey(ProductTypeList, verbose_name='Тип продукта', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория товара')
+    product_range = models.ForeignKey('ProductRange', null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, verbose_name='Название продукта')
     slug = models.SlugField(verbose_name='Slug для продукта')
     image = models.ImageField(verbose_name='Изображение для продукта')
@@ -53,8 +24,8 @@ class Product(models.Model):
 
     def __str__(self):
         return f'Товар из списка продуктов -- {self.name} --, |' \
-               f' Тип продукта -- {self.product_type_list.name} --,' \
-               f' | ПодКатегория продукта -- {self.product_type_list.sub_category.name} --'
+               f' Тип продукта -- {self.category.name} --,' \
+
 
     class Meta:
         verbose_name_plural = 'Продукт'
@@ -69,7 +40,6 @@ class ProductRange(models.Model):
         ('pz', 'PZ')
     )
 
-    main_product = models.ForeignKey(Product, verbose_name='Основной продукт', on_delete=models.CASCADE)
     name = models.CharField(max_length=255, verbose_name='Название товара')
     slug = models.SlugField()
     image = models.ImageField(verbose_name='Изображение для товара')
@@ -81,8 +51,7 @@ class ProductRange(models.Model):
     pub_date = models.DateTimeField(default=timezone.now, verbose_name='Дата создания товара')
 
     def __str__(self):
-        return f'Товар  -- {self.name} --, | который относиться к продукту -- {self.main_product.name} -- ' \
-               f'| Назвние типа продукта -- {self.main_product.product_type_list.name} --'
+        return self.name
 
     class Meta:
         verbose_name_plural = 'Товар'
