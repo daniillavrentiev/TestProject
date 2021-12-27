@@ -15,7 +15,6 @@ class Category(models.Model):
 class Product(models.Model):
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория товара')
-    product_range = models.ForeignKey('ProductRange', null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, verbose_name='Название продукта')
     slug = models.SlugField(verbose_name='Slug для продукта')
     image = models.ImageField(verbose_name='Изображение для продукта')
@@ -40,6 +39,7 @@ class ProductRange(models.Model):
         ('pz', 'PZ')
     )
 
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Основной продукт')
     name = models.CharField(max_length=255, verbose_name='Название товара')
     slug = models.SlugField()
     image = models.ImageField(verbose_name='Изображение для товара')

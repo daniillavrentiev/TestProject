@@ -19,11 +19,15 @@ class ProductRangeSerializer(serializers.ModelSerializer):
 
 class ProductsSerializer(serializers.ModelSerializer):
 
-    product_range = ProductRangeSerializer()
+    product_range = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = '__all__'
+
+    @staticmethod
+    def get_product_range(obj):
+        return ProductRangeSerializer(ProductRange.objects.filter(product=obj), many=True).data
 
 
 
