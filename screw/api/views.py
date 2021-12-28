@@ -1,6 +1,6 @@
 from rest_framework import viewsets, response
 
-from .serializers import CategorySerializer, ProductsSerializer
+from .serializers import CategorySerializer, ProductsSerializer, ProductRangeSerializer, CategoryProductSerializer
 
 from ..models import *
 
@@ -36,3 +36,14 @@ class ProductsViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductsSerializer
 
+
+class ProductRangeViewSet(viewsets.ModelViewSet):
+
+    queryset = ProductRange.objects.all()
+    serializer_class = ProductRangeSerializer
+
+
+class CategoryProductListViewSet(viewsets.ModelViewSet):
+
+    queryset = Category.objects.all()
+    serializer_class = CategoryProductSerializer

@@ -30,6 +30,14 @@ class ProductsSerializer(serializers.ModelSerializer):
         return ProductRangeSerializer(ProductRange.objects.filter(product=obj), many=True).data
 
 
+class CategoryProductSerializer(serializers.ModelSerializer):
 
+    products = serializers.SerializerMethodField()
 
+    class Meta:
+        model = Category
+        fields = '__all__'
 
+    @staticmethod
+    def get_products(obj):
+        return ProductsSerializer(Product.objects.filter(category=obj), many=True).data

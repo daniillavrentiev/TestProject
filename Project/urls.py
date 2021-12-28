@@ -17,13 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from screw.views import index, category, product_list, product_detail
+from screw.views import index, category, product_detail, product_list, product
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
+    path('product_list/<int:id>', product_list),
     path('product_detail/<int:id>/', product_detail),
-    path('product/', product_list),
+    path('product/<int:id>/', product),
     path('category/', category),
     path('api/', include('screw.api.urls')),
 ]

@@ -9,27 +9,27 @@ import Modal from 'react-bootstrap/Modal'
 
 
 
-function ProductList( ) {
+function ProductList( { match } ) {
 
+    const [category, setCategory] = useState({})
     const [product, setProduct] = useState([])
-    const [product_range, setProductRange] = useState([])
-
+    const id = match.params.id
 
     useEffect(() => {
         axios({
             method: "GET",
-            url: `http://127.0.0.1:8000/api/products/`
+            url: `http://127.0.0.1:8000/api/category_products/${id}/`
         }).then(response => {
             setProduct(response.data)
-            setProductRange(response.data.product_range)
         })
-    }, [])
+    }, [id])
 
     return (
             <Container>
             <Row>
                 <Col sm={8}>
                     <h3 className="pb-4 mb-4 fst-italic border-bottom">
+                        {category.name}
                     </h3>
                     <div className="row row-cols-1 row-cols-md-3">
                         {product.map(p=>(
@@ -43,7 +43,7 @@ function ProductList( ) {
                                     <div className="card-footer">
                                         <Row>
                                             <Col>
-                                                <Link to={{ pathname: `/posts/${p.id}/`, fromDashboard: false }}>Read more</Link>
+                                                <Link to={{ pathname: `/product/${p.id}/`, fromDashboard: false }}>Read more</Link>
                                             </Col>
                                         </Row>
                                     </div>

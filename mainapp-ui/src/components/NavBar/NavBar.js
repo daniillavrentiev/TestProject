@@ -44,7 +44,7 @@ function MyNavbar() {
                                 <nav className="nav d-flex justify-content-between">
                                     <Link  className="p-2 link-secondary" to={{ pathname: `/`, fromDashboard: false }}><h6><u>BlogNews</u></h6></Link>
                                     {categories.map(c =>(
-                                        <Link  className="p-2 link-secondary" to={{ pathname: `category/${c.id}/`, fromDashboard: false }}><h6><u>{c.name}</u></h6></Link>
+                                        <Link  className="p-2 link-secondary" to={{ pathname: `/product_list/${c.id}`, fromDashboard: false }}><h6><u>{c.name}</u></h6></Link>
                                     ))}
                                 </nav>
                                 <hr/>

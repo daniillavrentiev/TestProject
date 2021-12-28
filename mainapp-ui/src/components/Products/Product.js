@@ -9,20 +9,18 @@ import Modal from 'react-bootstrap/Modal'
 
 
 
-function ProductDetail({ match }) {
+function ProductRange({ match }) {
 
     const [product, setProduct] = useState({})
-    const [product_range, setProductRange] = useState([])
     const id = match.params.id
 
 
     useEffect(() => {
         axios({
             method: "GET",
-            url: `http://127.0.0.1:8000/api/products/${id}/`
+            url: `http://127.0.0.1:8000/api/product/${id}/`
         }).then(response => {
             setProduct(response.data)
-            setProductRange(response.data.product_range)
         })
     }, [id])
 
@@ -45,29 +43,6 @@ function ProductDetail({ match }) {
                         </div>
                     </div>
 
-
-                    <div className="row row-cols-1 row-cols-md-3">
-                        {product_range.map(p=>(
-                        <div className="col mb-4">
-                            <div className="card h-100">
-                                <img src={p.image} className="card-img-top" alt="..."/>
-                                    <div className="card-body">
-                                        <h5 className="card-title">{p.name}</h5>
-                                        <p className="card-text">{p.description_1}</p>
-                                    </div>
-                                    <div className="card-footer">
-                                        <Row>
-                                            <Col>
-                                                <Link to={{ pathname: `/product/${p.id}/`, fromDashboard: false }}>Read more</Link>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                            </div>
-                        </div>
-                        ))}
-                    </div>
-
-
                 </Col>
                 <Col sm={4}>
                     <br/>
@@ -87,4 +62,4 @@ function ProductDetail({ match }) {
     )
 }
 
-export default ProductDetail;
+export default ProductRange;
